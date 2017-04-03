@@ -5,6 +5,8 @@ Zabrania się używania całości projektu lub jego składników w pracach konku
 Na starcie Bluetooth jest wyłączony żeby użytkownik się ruszył  
 żeby się podłączyć do urządzenia (i żeby włączyć tylko jeśli potrzebuje)  
   
+Zmiana nazwy z TermoparaDNO na Kubkuino!  
+
 TermoparaV2:  
 	-.NET Framework 3.5  
 	-Visual Studio 2008 Express  
