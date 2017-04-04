@@ -7,21 +7,17 @@ Na starcie Bluetooth jest wyłączony żeby użytkownik się ruszył
   
 Zmiana nazwy z TermoparaDNO na Kubkuino!  
 
+# Specjalizowany czujnik temperaturowy-mikroprocesorowy analizator cieplny
+
 TermoparaV2:  
 	-.NET Framework 3.5  
 	-Visual Studio 2008 Express  
-	-Łączenie, rozłączanie  
 	-Ustawianie temperatur  
 	-Tryb pomiaru  
 	-Ustawianie materiału  
-	-Ustawianie dna  
-	-Ustawienia zasilania (wyświetlacz etc)  
+	-Ustawianie kształtu dna (płaskie/wklęsłe)  
 	-Włączanie/wyłączanie alarmu  
-	-Odczyt co włączone a co nie  
-	-Ustawienia Bluetooth  
-	***  
-	-Program porównuje temperaturę, nie Arduino  
-	-Zaimplementować resztę komend  
+	-Ustawienia modułu Bluetooth  
 	-Zapis ostatnich ustawień  
 	-Odczyt trybu pomiaru i materiału  
 	-Sprawdzenie materiału i trybu pomiaru na starcie  
@@ -29,16 +25,14 @@ TermoparaV2:
 	  
 Do zrobienia (TermoparaV2):  
 	-Alarm w pasku powiadomień,  
-	-Skan urządzeń BT na starcie,  
+	-Skan i wybór urządzeń BT na starcie,  
 	-Manual (nie, ReadMe się nie liczy),  
 	-Ładniejszy interfejs,  
-	-wynik poprawki < 24 ---> temperatura czujnika  
-	 wynik poprawki > 24 ---> temperatura z poprawką  
 	-Naprawa crashujących się wskaźników temperatury  
   
 Do zrobienia:  
-	-TermoparaV2  
-	-Optymalizacja programu  
+	-Optymializacja programów  
+	-Podczerwony czujnik temperatury
 	  
 Tryby:  
 	Auto - sam zmienia czujnik temperatury przy wklęsłym dnie i trybie innym niż aluminium  
@@ -53,51 +47,51 @@ Kliki:
 	4 - tryb pomiaru  
 		  
 Arduino:  
-Zakres pracy:  
-	20-25 stopni celsjusza w pomieszczeniu  
-Kod:  
-	#define NAME "[nazwa]" - Ustawia nazwę jako domyślną  
-	#define PASSWORD "[cyfry]" - Ustawia wpisane cyfry jako hasło do parowania  
-	#define TONE [TON] - Dźwięk alarmu (uzupełnić na podstawie pitches.h)  
-	#define ALARM_TIME [milisekundy] - Ile milisekund Arduino ma piszczeć  
-	  
-Komendy:  
-	X - Pierwszy argument  
-	Y - Drugi argument  
-	  
-	e; - Nawiązanie połączenia (zwraca "HELLO\r\n") MUSI ZOSTAĆ WYSŁANE  
-	qquit; - Rozłączenie MUSI ZOSTAĆ WYSŁANE (specjanie takie długie - na wypadek błędu komunikacji,  
-		który wysyła 'q' zamiast 'r'. Nie wiem czemu.)  
-	CXX.X; - Ustawienie temperatury zimna  
-	HXX.X; - Ustawienie temperatury ciepła  
-		C?;/H?; - sprawdzenie temperatur  
-	MX; - Ustawia materiał:  
-		0 - ceramika  
-		1 - aluminium  
-		2 - szklanka  
-		? - zwraca matariał (0-2)  
-	S[komenda AT]; - Przesyła komendę AT do modułu Bluetooth. Zwraca odpowiedź modułu.  
-	d; - Reset modułu Bluetooth, ustawienie domyślnej nazwy i hasła  
-	r0; - Zwraca temperaturę czujnika dla bieżącego trybu  
-	r1; - Zwraca poprawioną temperaturę dla bieżącego trybu  
-	t; - Zwraca stan jako char (H - Hot, R - Ready, C - Cold)  
-	DXY; - Moduł zarządzania komponentami:  
-		0Y* - LCD (1 - włącz, 0 - wyłącz)  
-		1Y* - Podswietlenie (1 - włącz, 0 - wyłącz)  
-		2Y - BT (1 - włącz, 0 - wyłącz)  
-		3Y* - LED (1 - włącz, 0 - wyłącz)  
-		4Y* - Wyciszenie (1 - wyciszony, 0 - głośny)  
-		5Y* - Rodzaj dna (1 - płaskie, 0 - wklęsłe)  
-		6 - Status LCD, Podświetlenie, LED, Alarm, Dno (płaskie) (1 - włączony, 0 - wyłączony)  
-		7Y - Tryb pomiaru:  
-			0 - automatyczny wybór czujnika (wklęsłe dno gdy inny tryb niż aluminium)  
-			1 - pomiar temperatury dna bez poprawki (wklęsłe dno, każdy tryb, temperatura na oko)  
-			2 - tylko zewnętrzny czujnik (DS18B20)  
-			3 - pomar temperatury dna  
-			? - zwraca aktywny tryb (0-3)  
-		8 - Przejście w tryb uśpienia  
+	Zakres pracy: 20-25 stopni celsjusza w pomieszczeniu  
+	
+	Kod:  
+		#define NAME "[nazwa]" - Ustawia nazwę jako domyślną  
+		#define PASSWORD "[cyfry]" - Ustawia wpisane cyfry jako hasło do parowania  
+		#define TONE [TON] - Dźwięk alarmu (uzupełnić na podstawie pitches.h)  
+		#define ALARM_TIME [milisekundy] - Ile milisekund Arduino ma piszczeć  
 		  
-	*Jak jako argument poda się znak zapytania (?) zostanie zwrócony stan pojedynczego modułu  
+	Komendy:  
+		X - Pierwszy argument  
+		Y - Drugi argument  
+		  
+		e; - Nawiązanie połączenia (zwraca "HELLO\r\n") MUSI ZOSTAĆ WYSŁANE  
+		qquit; - Rozłączenie MUSI ZOSTAĆ WYSŁANE (specjanie takie długie - na wypadek błędu komunikacji,  
+			który wysyła 'q' zamiast 'r'. Nie wiem czemu.)  
+		CXX.X; - Ustawienie temperatury zimna  
+		HXX.X; - Ustawienie temperatury ciepła  
+			C?;/H?; - sprawdzenie temperatur  
+		MX; - Ustawia materiał:  
+			0 - ceramika  
+			1 - aluminium  
+			2 - szklanka  
+			? - zwraca matariał (0-2)  
+		S[komenda AT]; - Przesyła komendę AT do modułu Bluetooth. Zwraca odpowiedź modułu.  
+		d; - Reset modułu Bluetooth, ustawienie domyślnej nazwy i hasła  
+		r0; - Zwraca temperaturę czujnika dla bieżącego trybu  
+		r1; - Zwraca poprawioną temperaturę dla bieżącego trybu  
+		t; - Zwraca stan jako char (H - Hot, R - Ready, C - Cold)  
+		DXY; - Moduł zarządzania komponentami:  
+			0Y* - LCD (1 - włącz, 0 - wyłącz)  
+			1Y* - Podswietlenie (1 - włącz, 0 - wyłącz)  
+			2Y - BT (1 - włącz, 0 - wyłącz)  
+			3Y* - LED (1 - włącz, 0 - wyłącz)  
+			4Y* - Wyciszenie (1 - wyciszony, 0 - głośny)  
+			5Y* - Rodzaj dna (1 - płaskie, 0 - wklęsłe)  
+			6 - Status LCD, Podświetlenie, LED, Alarm, Dno (płaskie) (1 - włączony, 0 - wyłączony)  
+			7Y - Tryb pomiaru:  
+				0 - automatyczny wybór czujnika (wklęsłe dno gdy inny tryb niż aluminium)  
+				1 - pomiar temperatury dna bez poprawki (wklęsłe dno, każdy tryb, temperatura na oko)  
+				2 - tylko zewnętrzny czujnik (DS18B20)  
+				3 - pomar temperatury dna  
+				? - zwraca aktywny tryb (0-3)  
+			8 - Przejście w tryb uśpienia  
+			  
+		*Jak jako argument poda się znak zapytania (?) zostanie zwrócony stan pojedynczego modułu  
 	  
 Każda komenda jest zakończona średnikiem ';'!  
   
