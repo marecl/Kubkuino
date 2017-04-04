@@ -1,4 +1,5 @@
-# Specjalizowany czujnik temperaturowy-mikroprocesorowy analizator cieplny
+# Specjalizowany czujnik temperaturowy:
+## Mikroprocesorowy analizator cieplny
 
 Termopara:  
 	-.NET Framework 3.5  
@@ -14,17 +15,14 @@ Termopara:
 	-Sprawdzenie materiału i trybu pomiaru na starcie  
 	-Ulubione ustawienie  
   
-Do zrobienia (PC):  
+Do zrobienia:  
 	-Alarm w pasku powiadomień,  
 	-Skan i wybór urządzeń BT na starcie,  
 	-Manual (nie, ReadMe się nie liczy),  
 	-Ładniejszy interfejs,  
-	-Naprawa crashujących się wskaźników temperatury  
+	-Naprawa wskaźników temperatury  
 	-Zmiana nazwy na Kubkuino  
-  
-Do zrobienia:  
-	-Optymializacja programów  
-	-Podczerwony czujnik temperatury  
+	-Podczerwony czujnik temperatury
   
 Tryby:  
 	Auto - sam zmienia czujnik temperatury przy wklęsłym dnie i trybie innym niż aluminium  
@@ -39,7 +37,9 @@ Nawigacja:
 	4 - tryb pomiaru  
   
 Arduino:  
-	Zakres pracy: 20-25 stopni celsjusza w pomieszczeniu  
+  
+	Zakres pracy:
+		20-25 stopni celsjusza w pomieszczeniu  
   
 	Kod:  
 		#define NAME "[nazwa]" - Ustawia nazwę jako domyślną  

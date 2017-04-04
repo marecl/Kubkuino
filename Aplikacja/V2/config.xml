@@ -1,12 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<config>
-  <goraca>47.00</goraca>
-  <zimna>60.00</zimna>
-  <material>1</material>
-  <pomiar>0</pomiar>
-  <wyswietlacz>true</wyswietlacz>
-  <podswietlenie>true</podswietlenie>
-  <led>true</led>
-  <alarm>true</alarm>
-  <plaskie>false</plaskie>
-</config>
