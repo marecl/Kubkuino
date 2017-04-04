@@ -1,4 +1,7 @@
-String modes[] = { //Available modes - I don't think other are needed
+/*
+ * Zmniejszamy burdel w głównym pliku
+ */
+String modes[] = { //Popularne materiały
   "CERAMIKA ",
   "ALUMINIUM",
   "SZKLANKA "
@@ -20,9 +23,9 @@ String powermodes[] = { //Settings list
   " Bluetooth:",
   "   LED: ",
   "  Alarm: ",
-  " Backlight:",
-  "   Shutdown   ",
-  "     EXIT     "
+  "Tlo ekranu:",
+  "    Wylacz    ",
+  "    POWROT    "
 };
 const uint8_t lar[] = { //Left arrow 0x00,0x01,0x03,0x07,0x07,0x03,0x01,0x00
   B000000,

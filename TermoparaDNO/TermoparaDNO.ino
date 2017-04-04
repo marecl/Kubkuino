@@ -220,15 +220,6 @@ void pomiarmanual() {
   while (ctrl.clicks != -1 && tryb == 2) {
     ctrl.Update();
     sensors.requestTemperatures();
-    if (bt.available()) {
-      input = bt.readStringUntil(';');
-      bt.flush();
-      btctl(input);
-      input = "";
-      lcd.clear();
-      lcd.print("  TRYB RECZNY");
-      lcd.setCursor(4, 1);
-    }
     pomiarpop = sensors.getTempCByIndex(0);
     if (bt.available()) {
       input = bt.readStringUntil(';');
@@ -491,7 +482,7 @@ void alarm() {
   if (czymaalarm == true && wylalarm == false && czyzimna == false) {
     if (glosny) bipczyk();
     wylalarm = true; //Wlaczy sie tylko jak musi
-    czymaalarm = false;
+    czymaalarm = false; //Magia booli. Nie ruszaj prosze :c
     czyzimna = true;
   }
 }
@@ -557,7 +548,7 @@ void powermenu() {
   int tmp = 0;
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("    Settings    ");
+  lcd.print("   Ustawienia   ");
   lcd.setCursor(0, 1);
   lcd.write(0);
   lcd.setCursor(15, 1);
