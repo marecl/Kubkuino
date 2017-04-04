@@ -1,15 +1,6 @@
-!!! Ten projekt jest projektem konkursowym !!!  
-Kopiowanie w celach zarobkowych bez konsultacji ze mną zabronione.  
-Zabrania się używania całości projektu lub jego składników w pracach konkursowych.  
-  
-Na starcie Bluetooth jest wyłączony żeby użytkownik się ruszył  
-żeby się podłączyć do urządzenia (i żeby włączyć tylko jeśli potrzebuje)  
-  
-Zmiana nazwy z TermoparaDNO na Kubkuino!  
-
 # Specjalizowany czujnik temperaturowy-mikroprocesorowy analizator cieplny
 
-TermoparaV2:  
+Termopara:  
 	-.NET Framework 3.5  
 	-Visual Studio 2008 Express  
 	-Ustawianie temperatur  
@@ -22,43 +13,44 @@ TermoparaV2:
 	-Odczyt trybu pomiaru i materiału  
 	-Sprawdzenie materiału i trybu pomiaru na starcie  
 	-Ulubione ustawienie  
-	  
-Do zrobienia (TermoparaV2):  
+  
+Do zrobienia (PC):  
 	-Alarm w pasku powiadomień,  
 	-Skan i wybór urządzeń BT na starcie,  
 	-Manual (nie, ReadMe się nie liczy),  
 	-Ładniejszy interfejs,  
 	-Naprawa crashujących się wskaźników temperatury  
+	-Zmiana nazwy na Kubkuino  
   
 Do zrobienia:  
 	-Optymializacja programów  
-	-Podczerwony czujnik temperatury
-	  
+	-Podczerwony czujnik temperatury  
+  
 Tryby:  
 	Auto - sam zmienia czujnik temperatury przy wklęsłym dnie i trybie innym niż aluminium  
 	Manual - tylko DS18B20 (niezależnie od trybu). Przytrzymaj przycisk żeby wyjść.  
 	Wymuś pomiar - poprawka dla dna płaskiego + mniej więcej temperatura dla wklęsłego  
 	Pomiar dna - pomiar temperatury dna bez poprawek. Przytrzymaj przycisk żeby wyjść.  
   
-Kliki:  
+Nawigacja:  
 	1 - pomiar i granice  
 	2 - ustawianie trybu (1 następny, dłuższy wybór)  
 	3 - menu zasilania (1 nastepny, dłuższy wybór)  
 	4 - tryb pomiaru  
-		  
+  
 Arduino:  
 	Zakres pracy: 20-25 stopni celsjusza w pomieszczeniu  
-	
+  
 	Kod:  
 		#define NAME "[nazwa]" - Ustawia nazwę jako domyślną  
 		#define PASSWORD "[cyfry]" - Ustawia wpisane cyfry jako hasło do parowania  
 		#define TONE [TON] - Dźwięk alarmu (uzupełnić na podstawie pitches.h)  
 		#define ALARM_TIME [milisekundy] - Ile milisekund Arduino ma piszczeć  
-		  
+  
 	Komendy:  
 		X - Pierwszy argument  
 		Y - Drugi argument  
-		  
+  
 		e; - Nawiązanie połączenia (zwraca "HELLO\r\n") MUSI ZOSTAĆ WYSŁANE  
 		qquit; - Rozłączenie MUSI ZOSTAĆ WYSŁANE (specjanie takie długie - na wypadek błędu komunikacji,  
 			który wysyła 'q' zamiast 'r'. Nie wiem czemu.)  
@@ -90,9 +82,9 @@ Arduino:
 				3 - pomar temperatury dna  
 				? - zwraca aktywny tryb (0-3)  
 			8 - Przejście w tryb uśpienia  
-			  
+  
 		*Jak jako argument poda się znak zapytania (?) zostanie zwrócony stan pojedynczego modułu  
-	  
+  
 Każda komenda jest zakończona średnikiem ';'!  
   
 Dla urzadzen zdalnych:  

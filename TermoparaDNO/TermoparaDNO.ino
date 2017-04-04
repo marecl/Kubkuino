@@ -81,7 +81,7 @@ void setup() {
   digitalWrite(gled, LOW);
   digitalWrite(bled, LOW);
   digitalWrite(btkey, LOW);
-  digitalWrite(btpow, HIGH); //Zmienic na LOW po testach progrmu na pc
+  digitalWrite(btpow, LOW);
   lcd.init();
   lcd.backlight();
   lcd.noDisplay();
