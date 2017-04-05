@@ -26,6 +26,7 @@ Do zrobienia:
 	-Automatyczne tworzenie nowego pliku do zapisu danych
   
 Tryby:  
+
 	Auto - sam zmienia czujnik temperatury przy wklęsłym dnie i trybie innym niż aluminium  
 	Manual - tylko DS18B20 (niezależnie od trybu). Przytrzymaj przycisk żeby wyjść.  
 	Wymuś pomiar - poprawka dla dna płaskiego + mniej więcej temperatura dla wklęsłego  
@@ -36,11 +37,10 @@ Nawigacja:
 	2 - ustawianie trybu (1 następny, dłuższy wybór)  
 	3 - menu zasilania (1 nastepny, dłuższy wybór)  
 	4 - tryb pomiaru  
-  
+Zakres pracy:  
+	20-25 stopni celsjusza w pomieszczeniu  
+	
 Arduino:  
-  
-	Zakres pracy:
-		20-25 stopni celsjusza w pomieszczeniu  
   
 	Kod:  
 		#define _NAME (String)"[NAZWA]" - Ustawia nazwę jako domyślną  
@@ -89,6 +89,7 @@ Arduino:
 Każda komenda jest zakończona średnikiem ';'!  
   
 Dla urzadzen zdalnych:  
+
 	SAT+NAME= SAT+NAME?  
 	SAT+PSWD= SAT+PSWD?  
 	e qquit - z automatu przy polaczeniu i rozlaczneiu  
@@ -98,26 +99,25 @@ Dla urzadzen zdalnych:
 	d - na samym koncu z potwierdzeniem (!)  
 	  
 Katalog:  
-	.* Aplikacja: Końcowa wersja aplikacji.  
-	.* Dokumentacje: Instrukcje obsługi i dokumentacja projektu
-	.* libraries: Biblioteki potrzebne do skompilowania programu  
-		..* Adafruit_BMP085_Library: Biblioteka czujnika temperatury i ciśnienia BMP180  
-		..* ClickButton: Sterowanie jednym przyciskiem  
-		..* LiquidCrystal_I2C: Biblioteka do obsługi wyświetlacza  
-	.* ~~Termopara_Wariacje: Odłamy Termopary zoptymalizowane do różnych konfiguracji~~
+1. Aplikacja: Końcowa wersja aplikacji.  
+2. Dokumentacje: Instrukcje obsługi i dokumentacja projektu  
+3. libraries: Biblioteki potrzebne do skompilowania programu  
+  * Adafruit_BMP085_Library: Biblioteka czujnika temperatury i ciśnienia BMP180.  
+  * ClickButton: Sterowanie jednym przyciskiem.  
+  * LiquidCrystal_I2C: Biblioteka do obsługi wyświetlacza.  
+4. ~~Termopara_Wariacje: Odłamy Termopary zoptymalizowane do różnych konfiguracji~~
 	Nieaktualizowany kod od dawna. Trzeba nadrobić.  
-		..* Termopara_BT: BT, LED  
-		..* TermoparaDNO_Minimum: LCD, LED, brak komunikacji  
-		..* TermoparaDNO_Serial: LCD, LED, komunikacja przez USB (domyśnie baud 9600)  
-	.* TermoparaDNO: Najbardziej wypasiona wersja programu  
-	.* TestPoprawka: Test jak zrobić poprawki dla różnych trybów  
-	.* Testy: Katalog z programami później dodanymi do głównego kodu 
-		..* Kubkuino: Druga wersja aplikacji na PC   
-		..* TestAlarm: Sprawdzanie alarmu  
-		..* TestBluetooth: Test komend Bluetooth  
-		..* TestDokumentacje: Folder robocy dokumentacji
-		..* RoznicaPomiaru: Dane z konsoli dotyczące różnicy temperatur dna a kubka  
-		..* TestShutdown: Test wyłączania Arduino  
-		..* TestTermoparaV1: Pierwsza wersja aplikacji na PC  
-		..* TestTone: Test głośniczka  
-	.* ReadMe: To ja!
+  * Termopara_BT: BT, LED  
+  * TermoparaDNO_Minimum: LCD, LED, brak komunikacji  
+  * TermoparaDNO_Serial: LCD, LED, komunikacja przez USB (domyśnie baud 9600)  
+5. TermoparaDNO: Najbardziej wypasiona wersja programu  
+6. Testy: Katalog z programami później dodanymi do głównego kodu 
+  * Kubkuino: Druga wersja aplikacji na PC   
+  * TestAlarm: Sprawdzanie alarmu  
+  * TestBluetooth: Test komend Bluetooth  
+  * TestDokumentacje: Folder robocy dokumentacji
+  * RoznicaPomiaru: Dane z konsoli dotyczące różnicy temperatur dna a kubka  
+  * TestShutdown: Test wyłączania Arduino  
+  * TestTermoparaV1: Pierwsza wersja aplikacji na PC  
+  * TestTone: Test głośniczka  
+7. ReadMe: To ja!
