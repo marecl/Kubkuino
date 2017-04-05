@@ -98,26 +98,26 @@ Dla urzadzen zdalnych:
 	d - na samym koncu z potwierdzeniem (!)  
 	  
 Katalog:  
-	* Aplikacja: Końcowa wersja aplikacji.  
-	* Dokumentacje: Instrukcje obsługi i dokumentacja projektu
-	* libraries: Biblioteki potrzebne do skompilowania programu  
-		* Adafruit_BMP085_Library: Biblioteka czujnika temperatury i ciśnienia BMP180  
-		* ClickButton: Sterowanie jednym przyciskiem  
-		* LiquidCrystal_I2C: Biblioteka do obsługi wyświetlacza  
-	* ~~Termopara_Wariacje: Odłamy Termopary zoptymalizowane do różnych konfiguracji~~
-	Nieaktualizowany kod od dawna. Trzeba nadrobić.
-		* Termopara_BT: BT, LED  
-		* TermoparaDNO_Minimum: LCD, LED, brak komunikacji  
-		* TermoparaDNO_Serial: LCD, LED, komunikacja przez USB (domyśnie baud 9600)  
-	* TermoparaDNO: Najbardziej wypasiona wersja programu  
-	* TestPoprawka: Test jak zrobić poprawki dla różnych trybów  
-	* Testy: Katalog z programami później dodanymi do głównego kodu 
-		* Kubkuino: Druga wersja aplikacji na PC   
-		* TestAlarm: Sprawdzanie alarmu  
-		* TestBluetooth: Test komend Bluetooth  
-		* TestDokumentacje: Folder robocy dokumentacji
-		* RoznicaPomiaru: Dane z konsoli dotyczące różnicy temperatur dna a kubka  
-		* TestShutdown: Test wyłączania Arduino  
-		* TestTermoparaV1: Pierwsza wersja aplikacji na PC  
-		* TestTone: Test głośniczka  
-	* ReadMe: To ja!
+	.* Aplikacja: Końcowa wersja aplikacji.  
+	.* Dokumentacje: Instrukcje obsługi i dokumentacja projektu
+	.* libraries: Biblioteki potrzebne do skompilowania programu  
+		..* Adafruit_BMP085_Library: Biblioteka czujnika temperatury i ciśnienia BMP180  
+		..* ClickButton: Sterowanie jednym przyciskiem  
+		..* LiquidCrystal_I2C: Biblioteka do obsługi wyświetlacza  
+	.* ~~Termopara_Wariacje: Odłamy Termopary zoptymalizowane do różnych konfiguracji~~
+	Nieaktualizowany kod od dawna. Trzeba nadrobić.  
+		..* Termopara_BT: BT, LED  
+		..* TermoparaDNO_Minimum: LCD, LED, brak komunikacji  
+		..* TermoparaDNO_Serial: LCD, LED, komunikacja przez USB (domyśnie baud 9600)  
+	.* TermoparaDNO: Najbardziej wypasiona wersja programu  
+	.* TestPoprawka: Test jak zrobić poprawki dla różnych trybów  
+	.* Testy: Katalog z programami później dodanymi do głównego kodu 
+		..* Kubkuino: Druga wersja aplikacji na PC   
+		..* TestAlarm: Sprawdzanie alarmu  
+		..* TestBluetooth: Test komend Bluetooth  
+		..* TestDokumentacje: Folder robocy dokumentacji
+		..* RoznicaPomiaru: Dane z konsoli dotyczące różnicy temperatur dna a kubka  
+		..* TestShutdown: Test wyłączania Arduino  
+		..* TestTermoparaV1: Pierwsza wersja aplikacji na PC  
+		..* TestTone: Test głośniczka  
+	.* ReadMe: To ja!
