@@ -27,7 +27,7 @@
 #define bled A3
 
 /* Mozna zmieniac ale bez przesady */
-#define _NAME (String)"Termopara" //Mozna zmienic na jakakolwiek nazwe, ale ta pasuje :P
+#define _NAME (String)"Kubkuino" //Mozna zmienic na jakakolwiek nazwe, ale ta pasuje :P
 #define _PASS (String)"0000" //Nie chcemy zeby ktos nam sie bawil. Haslo do parowania.
 
 #define TONE NOTE_D2 //Ton dzwieku alarmu
