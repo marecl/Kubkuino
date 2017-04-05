@@ -8,10 +8,10 @@ String modes[] = { //Popularne materiały
 };
 
 String pomiary[] = {
-  "  AUTOMATYCZNY  ",
-  "  WYMUS POMIAR  ",
-  "     RECZNY     ",
-  "   TYLKO DNO    "
+  " AUTOMATYCZNY ",
+  " WYMUS POMIAR ",
+  "    RECZNY    ",
+  "  TYLKO DNO   "
 };
 
 String wybor[] = {

@@ -23,6 +23,7 @@ Do zrobienia:
 	-Naprawa wskaźników temperatury  
 	-Zmiana nazwy na Kubkuino  
 	-Podczerwony czujnik temperatury
+	-Automatyczne tworzenie nowego pliku do zapisu danych
   
 Tryby:  
 	Auto - sam zmienia czujnik temperatury przy wklęsłym dnie i trybie innym niż aluminium  

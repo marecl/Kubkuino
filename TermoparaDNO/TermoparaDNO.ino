@@ -189,8 +189,8 @@ void pomiardno() {
   ctrl.ClearClicks();
   while (ctrl.clicks != -1 && tryb == 3) {
     pomiarpop = czuj.readTemperature();
-    lcd.setCursor(4, 1);
-    lcd.print(pomiarpop);
+    lcd.setCursor(5, 1);
+    lcd.print(pomiarpop, 1);
     lcd.write(2);
     lcd.print("C");
     ctrl.Update();
@@ -601,14 +601,15 @@ void trybpomiaru() {
   lcd.clear();
   lcd.print(" Tryb pomiaru:");
   lcd.setCursor(0, 1);
+  lcd.write(0);
   lcd.print(pomiary[tmp]);
+  lcd.write(1);
   while (ctrl.clicks != -1) {
     ctrl.Update();
     if (ctrl.clicks == 1) {
       tmp++;
       if (tmp > 3) tmp = 0;
-      clearline(1, 0, 15);
-      lcd.setCursor(0, 1);
+      lcd.setCursor(1, 1);
       lcd.print(pomiary[tmp]);
     }
     if (bt.available()) {
