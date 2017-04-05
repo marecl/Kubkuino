@@ -1,6 +1,34 @@
 /*
- * Zmniejszamy burdel w głównym pliku
- */
+   Zmniejszamy bałagan w głównym pliku
+*/
+
+/* Pomiary */
+int mode = 0; //Tryb
+int tryb = 0; //0 - auto, 1 - wymus, 2 - reczny, 3 - dno
+double hot = 60; //60
+double cold = 47; //47
+double pomiar, pomiarpop;
+bool plaskie = true; //true - plaskie, false - wklesle/inne
+
+/* Bluetooth */
+bool conn = false; //Polaczony?
+
+/* Komunikacja */
+String input = ""; //Surowe dane
+char command; //Komenda
+
+/* Alarm */
+bool wylalarm = true; //Drzemka?
+bool czymaalarm = false; //Czy ma sie odpalac
+bool czyzimna = true; //Czy wczesniej byla zimna
+bool glosny = true; //Czy ma piszczec?
+long tempbuzz = 0;
+
+/* Zasilanie */
+bool lcdon = true;
+bool ledon = true;
+bool lcdled = true;
+
 String modes[] = { //Popularne materiały
   "CERAMIKA ",
   "ALUMINIUM",
@@ -27,46 +55,18 @@ String powermodes[] = { //Settings list
   "    Wylacz    ",
   "    POWROT    "
 };
-const uint8_t lar[] = { //Left arrow 0x00,0x01,0x03,0x07,0x07,0x03,0x01,0x00
-  B000000,
-  B000001,
-  B000011,
-  B000111,
-  B000111,
-  B000011,
-  B000001,
-  B000000
+const uint8_t lar[] = { //Lewa strzalka
+  0x00, 0x01, 0x03, 0x07, 0x07, 0x03, 0x01, 0x00
 };
-const uint8_t rar[] = { //Right arrow 0x20,0x30,0x38,0x3C,0x3C,0x38,0x30,0x20
-  B100000,
-  B110000,
-  B111000,
-  B111100,
-  B111100,
-  B111000,
-  B110000,
-  B100000
+const uint8_t rar[] = { //Prawa strzalka
+  0x20, 0x30, 0x38, 0x3C, 0x3C, 0x38, 0x30, 0x20
 };
-const uint8_t st[] = { //Degree symbol 0x06,0x9,0x9,0x06,0x00,0x00,0x00,0x00
-  B000110,
-  B001001,
-  B001001,
-  B000110,
-  B000000,
-  B000000,
-  B000000,
-  B000000
+const uint8_t st[] = { //Znak stopnia
+  0x06, 0x9, 0x9, 0x06, 0x00, 0x00, 0x00, 0x00
 };
 
-const uint8_t icon[] = { //Bluetooth 0x04,0x06,0x15,0x0E,0x0E,0x15,0x06,0x04
-  B000100,
-  B000110,
-  B010101,
-  B001110,
-  B001110,
-  B010101,
-  B000110,
-  B000100
+const uint8_t icon[] = { //Bluetooth
+  0x04, 0x06, 0x15, 0x0E, 0x0E, 0x15, 0x06, 0x04
 };
 #define NOTE_B0  31
 #define NOTE_C1  33

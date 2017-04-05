@@ -15,13 +15,6 @@
 #define brx 6 //Bluetooth RX
 #define btkey 7 //Bt Key
 #define dsczuj 8 //DS18B20
-/*
-   Stara wersja:
-  #define btx 6
-  #define brx 7
-  #define dsczuj 8
-  #define btkey A0
-*/
 #define rled A1
 #define gled A2
 #define bled A3
@@ -32,33 +25,6 @@
 
 #define TONE NOTE_D2 //Ton dzwieku alarmu
 #define ALARM_TIME 10000 //Ile trwa piszczenie alarmu.
-
-/* Pomiary */
-int mode = 0; //Tryb
-int tryb = 0; //0 - auto, 1 - wymus, 2 - reczny, 3 - dno
-double hot = 60; //60
-double cold = 47; //47
-double pomiar, pomiarpop;
-bool plaskie = true; //true - plaskie, false - wklesle/inne
-
-/* Bluetooth */
-bool conn = false; //Polaczony?
-
-/* Komunikacja */
-String input = ""; //Surowe dane
-char command; //Komenda
-
-/* Alarm */
-bool wylalarm = true; //Drzemka?
-bool czymaalarm = false; //Czy ma sie odpalac
-bool czyzimna = true; //Czy wczesniej byla zimna
-bool glosny = true; //Czy ma piszczec?
-long tempbuzz = 0;
-
-/* Zasilanie */
-bool lcdon = true;
-bool ledon = true;
-bool lcdled = true;
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 Adafruit_BMP085 czuj;
