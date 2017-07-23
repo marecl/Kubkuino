@@ -3,8 +3,8 @@
 */
 
 /* Pomiary */
-int mode = 0; //Tryb
-int tryb = 0; //0 - auto, 1 - wymus, 2 - reczny, 3 - dno
+uint8_t mode = 0; //Tryb
+uint8_t tryb = 0; //0 - auto, 1 - wymus, 2 - reczny, 3 - dno
 double hot = 60; //60
 double cold = 47; //47
 double pomiar, pomiarpop;
@@ -13,16 +13,11 @@ bool plaskie = true; //true - plaskie, false - wklesle/inne
 /* Bluetooth */
 bool conn = false; //Polaczony?
 
-/* Komunikacja */
-String input = ""; //Surowe dane
-char command; //Komenda
-
 /* Alarm */
 bool wylalarm = true; //Drzemka?
 bool czymaalarm = false; //Czy ma sie odpalac
 bool czyzimna = true; //Czy wczesniej byla zimna
 bool glosny = true; //Czy ma piszczec?
-long tempbuzz = 0;
 
 /* Zasilanie */
 bool lcdon = true;
@@ -55,19 +50,44 @@ String powermodes[] = { //Settings list
   "    Wylacz    ",
   "    POWROT    "
 };
-const uint8_t lar[] = { //Lewa strzalka
+uint8_t lar[] = { //Lewa strzalka
   0x00, 0x01, 0x03, 0x07, 0x07, 0x03, 0x01, 0x00
 };
-const uint8_t rar[] = { //Prawa strzalka
+uint8_t rar[] = { //Prawa strzalka
   0x20, 0x30, 0x38, 0x3C, 0x3C, 0x38, 0x30, 0x20
 };
-const uint8_t st[] = { //Znak stopnia
+uint8_t st[] = { //Znak stopnia
   0x06, 0x9, 0x9, 0x06, 0x00, 0x00, 0x00, 0x00
 };
-
-const uint8_t icon[] = { //Bluetooth
+uint8_t icon[] = { //Bluetooth
   0x04, 0x06, 0x15, 0x0E, 0x0E, 0x15, 0x06, 0x04
 };
+
+double poprawka(int tmode, double x) {
+  if (x > 27) {
+    if (plaskie) {
+      switch (tmode) {
+        case 0: return (-0.0000266014 * pow(x, 4) + 0.0049087474 * pow(x, 3) - 0.3324086598 * pow(x, 2) + 10.4414317754 * x - 97.8338242811);
+          break;
+        case 1: return (-0.0000002259 * pow(x, 5) + 0.0000546227 * pow(x, 4) - 0.005166266 * pow(x, 3) + 0.2374061139 * pow(x, 2) - 4.4286915613 * x + 48.8052073927);
+          break;
+        case 2: return (-0.0000103493 * pow(x, 4) + 0.0017075599 * pow(x, 3) - 0.1025942957 * pow(x, 2) + 3.2203268079 * x - 14.8065137218);
+          break;
+      }
+    } else if (tryb == 1) {
+      switch (tmode) {
+        case 0: return (-0.0000000523 * pow(x, 6) + 0.0000181290 * pow(x, 5) - 0.0025664649 * pow(x, 4) + 0.1892512408 * pow(x, 3) - 7.6528408984 * pow(x, 2) + 161.3202013939 * x - 1361.6192106802);
+          break;
+        case 1: return (-0.0000228971 * pow(x, 4) + 0.0050144170 * pow(x, 3) - 0.4037994853 * pow(x, 2) + 14.8490090694 * x - 175.6283333484);
+          break;
+        case 2: return (-0.0000105179 * pow(x, 4) + 0.0016541754 * pow(x, 3) - 0.0958791221 * pow(x, 2) + 2.9379906334 * x - 11.7620175007);
+          break;
+      }
+    }
+  }
+  return x;
+}
+
 #define NOTE_B0  31
 #define NOTE_C1  33
 #define NOTE_CS1 35

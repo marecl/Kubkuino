@@ -1,9 +1,11 @@
 # Specjalizowany czujnik temperaturowy:
 ## Mikroprocesorowy analizator cieplny
 
+Zrobiłeś kawę albo herbatę i nie chcesz pilnować aż ostygnie? To coś dla Ciebie!
+
 Termopara:  
 	-.NET Framework 3.5  
-	-Visual Studio 2008 Express  
+	-Visual Studio 2017 Community
 	-Ustawianie temperatur  
 	-Tryb pomiaru  
 	-Ustawianie materiału  
@@ -24,6 +26,8 @@ Do zrobienia:
 	-Zmiana nazwy na Kubkuino  
 	-Podczerwony czujnik temperatury
 	-Automatyczne tworzenie nowego pliku do zapisu danych
+	-Migracja configa do JSONa  
+	-Zrobienie jeszcze ładniejszego programu  
   
 Tryby:  
 
@@ -38,7 +42,7 @@ Nawigacja:
 	3 - menu zasilania (1 nastepny, dłuższy wybór)  
 	4 - tryb pomiaru  
 Zakres pracy:  
-	20-25 stopni celsjusza w pomieszczeniu  
+	20-25 stopni celsjusza
 	
 Arduino:  
   
@@ -87,17 +91,7 @@ Arduino:
 		*Jak jako argument poda się znak zapytania (?) zostanie zwrócony stan pojedynczego modułu  
   
 Każda komenda jest zakończona średnikiem ';'!  
-  
-Dla urzadzen zdalnych:  
 
-	SAT+NAME= SAT+NAME?  
-	SAT+PSWD= SAT+PSWD?  
-	e qquit - z automatu przy polaczeniu i rozlaczneiu  
-	D6 (raz) r1 (interwały) - w tle  
-	D1/2/3/4/5/7  
-	C H M  
-	d - na samym koncu z potwierdzeniem (!)  
-	  
 Katalog:  
 1. Aplikacja: Końcowa wersja aplikacji.  
 2. Dokumentacje: Instrukcje obsługi i dokumentacja projektu  
@@ -113,11 +107,8 @@ Katalog:
 5. TermoparaDNO: Najbardziej wypasiona wersja programu  
 6. Testy: Katalog z programami później dodanymi do głównego kodu 
   * Kubkuino: Druga wersja aplikacji na PC   
-  * TestAlarm: Sprawdzanie alarmu  
   * TestBluetooth: Test komend Bluetooth  
-  * TestDokumentacje: Folder robocy dokumentacji
+  * TestDokumentacje: Folder roboczy dokumentacji  
   * RoznicaPomiaru: Dane z konsoli dotyczące różnicy temperatur dna a kubka  
-  * TestShutdown: Test wyłączania Arduino  
   * TestTermoparaV1: Pierwsza wersja aplikacji na PC  
-  * TestTone: Test głośniczka  
 7. ReadMe: To ja!

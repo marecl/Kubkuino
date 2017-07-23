@@ -48,6 +48,9 @@ void setup() {
   digitalWrite(bled, LOW);
   digitalWrite(btkey, LOW);
   digitalWrite(btpow, LOW);
+  czuj.begin();
+  sensors.begin();
+  bt.begin(38400);
   lcd.init();
   lcd.backlight();
   lcd.noDisplay();
@@ -55,13 +58,9 @@ void setup() {
   lcd.createChar(1, rar); //Prawa strzałka
   lcd.createChar(2, st); //Stopien Celsjusza
   lcd.createChar(3, icon); //Ikona BT
-  czuj.begin();
-  sensors.begin();
-  bt.begin(38400);
   lcd.display();
   lcd.clear();
   lcd.print(modes[mode]);
-  Serial.begin(9600);
 }
 
 void loop() {
@@ -69,43 +68,42 @@ void loop() {
   alarm();
   lcd.setCursor(0, 1);
   if (pomiarpop > hot)
-    lcd.print("Goraca");
+    lcd.print(F("Goraca"));
   else if (pomiarpop < cold)
-    lcd.print("Zimna ");
-  else if (pomiarpop >= cold && pomiarpop <= hot)
-    lcd.print("Ideolo");
+    lcd.print(F("Zimna "));
+  else lcd.print(F("Ideolo"));
 
   ctrl.Update();
+
   if (bt.available()) {
-    input = bt.readStringUntil(';');
+    String input = bt.readStringUntil(';');
     bt.flush();
     btctl(input);
-    input = "";
     lcd.setCursor(0, 0);
     lcd.print(modes[mode]);
   }
   if (conn == true && digitalRead(btpow) == HIGH) { //Rysuje ikone polaczenia
     lcd.setCursor(15, 1); lcd.write(3);
   } else {
-    lcd.setCursor(15, 1); lcd.print(" ");
+    lcd.setCursor(15, 1); lcd.print(F(" "));
   }
   switch (ctrl.clicks) {
     case 1: //Odczyty, goraca, zimna
       lcd.clear();
-      if (plaskie) lcd.print("Plaskie");
-      else lcd.print("Wklesle");
+      if (plaskie) lcd.print(F("Plaskie"));
+      else lcd.print(F("Wklesle"));
       lcd.setCursor(0, 1);
-      lcd.print("Z/G:");
+      lcd.print(F("Z/G:"));
       lcd.print(cold, 1);
-      lcd.print("/");
+      lcd.print(F("/"));
       lcd.print(hot, 1);
       lcd.write(2);
-      lcd.print("C");
+      lcd.print(F("C"));
       lcd.setCursor(12, 0);
       lcd.write(2);
-      lcd.print("C");
-      long long tempnow;
-      tempnow = (long long)millis();
+      lcd.print(F("C"));
+      uint32_t tempnow;
+      tempnow = millis();
       while (millis() - tempnow <= 2000) {
         lcd.setCursor(8, 0);
         lcd.print(pomiar, 1);
@@ -122,34 +120,10 @@ void loop() {
   }
 }
 
-double poprawka(int tmode, double x) {
-  double outx;
-  if (x > 27) {
-    if (plaskie) {
-      switch (tmode) {
-        case 0: outx = -0.0000266014 * pow(x, 4) + 0.0049087474 * pow(x, 3) - 0.3324086598 * pow(x, 2) + 10.4414317754 * x - 97.8338242811;
-          break;
-        case 1: outx = -0.0000002259 * pow(x, 5) + 0.0000546227 * pow(x, 4) - 0.005166266 * pow(x, 3) + 0.2374061139 * pow(x, 2) - 4.4286915613 * x + 48.8052073927; break;
-        case 2: outx = -0.0000103493 * pow(x, 4) + 0.0017075599 * pow(x, 3) - 0.1025942957 * pow(x, 2) + 3.2203268079 * x - 14.8065137218;
-          break;
-      }
-    } else if (tryb == 1) {
-      switch (tmode) {
-        case 0: outx = -0.0000000523 * pow(x, 6) + 0.0000181290 * pow(x, 5) - 0.0025664649 * pow(x, 4) + 0.1892512408 * pow(x, 3) - 7.6528408984 * pow(x, 2) + 161.3202013939 * x - 1361.6192106802;
-          break;
-        case 1: outx = -0.0000228971 * pow(x, 4) + 0.0050144170 * pow(x, 3) - 0.4037994853 * pow(x, 2) + 14.8490090694 * x - 175.6283333484;
-          break;
-        case 2: outx = -0.0000105179 * pow(x, 4) + 0.0016541754 * pow(x, 3) - 0.0958791221 * pow(x, 2) + 2.9379906334 * x - 11.7620175007; break;
-      }
-    }
-  } else outx = x;
-  return outx;
-}
-
 void pomiardno() {
   tryb = 3;
   lcd.clear();
-  lcd.print("   POMIAR DNA");
+  lcd.print(F("   POMIAR DNA"));
   lcd.setCursor(4, 1);
   while (digitalRead(ctl) == LOW) {}
   ctrl.ClearClicks();
@@ -158,16 +132,15 @@ void pomiardno() {
     lcd.setCursor(5, 1);
     lcd.print(pomiarpop, 1);
     lcd.write(2);
-    lcd.print("C");
+    lcd.print(F("C"));
     ctrl.Update();
     alarm();
     if (bt.available()) {
-      input = bt.readStringUntil(';');
+      String input = bt.readStringUntil(';');
       bt.flush();
       btctl(input);
-      input = "";
       lcd.clear();
-      lcd.print("   POMIAR DNA");
+      lcd.print(F("   POMIAR DNA"));
       lcd.setCursor(4, 1);
     }
   }
@@ -179,7 +152,7 @@ void pomiardno() {
 void pomiarmanual() {
   tryb = 2;
   lcd.clear();
-  lcd.print("  TRYB RECZNY");
+  lcd.print(F("  TRYB RECZNY"));
   lcd.setCursor(4, 1);
   while (digitalRead(ctl) == LOW) {}
   ctrl.ClearClicks();
@@ -188,18 +161,17 @@ void pomiarmanual() {
     sensors.requestTemperatures();
     pomiarpop = sensors.getTempCByIndex(0);
     if (bt.available()) {
-      input = bt.readStringUntil(';');
+      String input = bt.readStringUntil(';');
       bt.flush();
       btctl(input);
-      input = "";
       lcd.clear();
-      lcd.print("  TRYB RECZNY");
+      lcd.print(F("  TRYB RECZNY"));
       lcd.setCursor(4, 1);
     }
     lcd.setCursor(4, 1);
     lcd.print(pomiarpop);
     lcd.write(2);
-    lcd.print("C");
+    lcd.print(F("C"));
     alarm();
   }
   while (digitalRead(ctl) == LOW) {}
@@ -224,43 +196,33 @@ void updatemp(int a, int x, int y) {
       lcd.setCursor(x, y);
     lcd.print(pomiarpop, 1);
     lcd.write(2);
-    lcd.print("C");
+    lcd.print(F("C"));
   }
 }
 
 void btctl(String tinput) { //Usuwamy \r\n
-  if (input == "\r\n" || input == "\n" || input == "\r") return (0);
-  command = tinput.charAt(0);
+  if (tinput == "\r\n" || tinput == "\n" || tinput == "\r") return void();
+  char command = tinput.charAt(0);
   if (tinput.length() > 1)
     tinput.remove(0, 1);
   String tempout;
   switch (command) {
-    case 'e': bt.print("HELLO\r\n"); conn = true; break; //Odpowiadamy - polaczono z dobrym urzadzeniem
-    case 'r': if (tinput[0] == '0') {
-        if ((!plaskie && tryb == 0) || tryb == 2) { //r0
-          sensors.requestTemperatures();
-          pomiar = sensors.getTempCByIndex(0);
-          bt.print(pomiar);
-        } else if ((tryb != 2 && plaskie) || tryb == 3) {
-          pomiar = czuj.readTemperature();
-          bt.print(pomiar);
-        }
-      }
-      else if (tinput[0] == '1') {
-        if ((!plaskie && tryb == 0) || tryb == 2) {
-          sensors.requestTemperatures();
-          pomiar = sensors.getTempCByIndex(0);
-          bt.print(pomiar);
-        } else if ((tryb != 2 && plaskie) || tryb == 3) {
-          pomiar = czuj.readTemperature();
+    case 'e': bt.print(F("HELLO\r\n")); conn = true; break; //Odpowiadamy - polaczono z dobrym urzadzeniem
+    case 'r':
+      if ((!plaskie && tryb == 0) || tryb == 2) {
+        sensors.requestTemperatures();
+        pomiar = sensors.getTempCByIndex(0);
+        bt.print(pomiar);
+      } else if ((tryb != 2 && plaskie) || tryb == 3) {
+        pomiar = czuj.readTemperature();
+        if (tinput[0] == '1')
           pomiarpop = poprawka(mode, pomiar);
-          bt.print(pomiarpop);
-        }
+        bt.print(pomiar);
       }
       bt.print("\r\n"); break;
     case 't': if (pomiarpop > hot) bt.print("H\r\n");
-      if (pomiarpop < cold) bt.print("C\r\n");
-      if (pomiarpop >= cold && pomiarpop <= hot) bt.print("R\r\n"); break;
+      else if (pomiarpop < cold) bt.print("C\r\n");
+      else bt.print("R\r\n"); break;
     case 'd': service("AT+ORGL"); service("AT+NAME=" + _NAME); service("AT+PSWD=" + _PASS); break; //Reset do fabrycznych
     case 'q': if (tinput == "quit") {
         conn = false; service("AT+DISC"); digitalWrite(btpow, LOW); //Rozlaczanie
@@ -321,7 +283,7 @@ void btctl(String tinput) { //Usuwamy \r\n
             tone(buzz, TONE); delay(75); noTone(buzz); delay(250);
             tone(buzz, TONE); delay(75); noTone(buzz);
             glosny = true; //J.w.
-          } else if (tinput == '?') {
+          } else if (tinput == "?") {
             if (glosny) bt.print("1\r\n");
             else bt.print("0\r\n");
           } break;
@@ -366,7 +328,7 @@ void service(String a) {
   a += "\r\n";
   digitalWrite(btkey, HIGH);
   delay(500);
-  for (int z = 0; z < a.length(); z++)
+  for (uint8_t z = 0; z < a.length(); z++)
     bt.write(a[z]);
   long long temptime = millis();
   while (bt.available() == 0 && (millis() - temptime) <= 5000) {}
@@ -377,7 +339,7 @@ void service(String a) {
   bt.flush();
   /*Smieci wylatuja*/
   a.trim();
-  for (int g = 0; g < a.length(); g++) {
+  for (uint8_t g = 0; g < a.length(); g++) {
     if (a[g] == 0x0A || a[g] == 0x0D)
       a.remove(g);
   }
@@ -385,7 +347,7 @@ void service(String a) {
   /*Odpowiadamy*/
   lcd.clear();
   lcd.print(a); //Mozna wywalic ale pokazuje ze dziala
-  if (conn == true) bt.print(a + "\r\n");
+  if (conn) bt.print(a + "\r\n");
   delay(1000);
   lcd.clear();
 }
@@ -394,19 +356,18 @@ void service(String a) {
 void clearline(int line, int pocz, int kon) {
   lcd.setCursor(pocz, line);
   for (int a = pocz; a <= kon; a++)
-    lcd.print(" ");
+    lcd.print(F(" "));
 }
 
 void bipczyk() {
-  tempbuzz = (long)millis();
+  uint32_t tempbuzz = millis();
   tone(buzz, TONE);
   while ((millis() - tempbuzz) <= ALARM_TIME && digitalRead(ctl) == HIGH) {
     if (tryb == 0 || tryb == 1) updatemp(mode, 10, 0);
     if (bt.available()) {
-      input = bt.readStringUntil(';');
+      String input = bt.readStringUntil(';');
       bt.flush();
       btctl(input);
-      input = "";
     }
   }
   noTone(buzz);
@@ -431,21 +392,21 @@ void alarm() {
     czyzimna = true;
     czymaalarm = false;
     wylalarm = true;
-    if (ledon == true) {
+    if (ledon) {
       digitalWrite(rled, LOW);
       digitalWrite(gled, LOW);
       digitalWrite(bled, HIGH);
     }
-  } else if (pomiarpop >= cold && pomiarpop <= hot) {
+  } else {
     czymaalarm = true;
     wylalarm = false;
-    if (ledon == true) {
+    if (ledon) {
       digitalWrite(rled, LOW);
       digitalWrite(gled, HIGH);
       digitalWrite(bled, LOW);
     }
   }
-  if (czymaalarm == true && wylalarm == false && czyzimna == false) {
+  if (czymaalarm && !wylalarm && !czyzimna) {
     if (glosny) bipczyk();
     wylalarm = true; //Wlaczy sie tylko jak musi
     czymaalarm = false; //Magia booli. Nie ruszaj prosze :c
@@ -455,7 +416,7 @@ void alarm() {
 
 void settings() {
   lcd.clear();
-  lcd.print("Tryb:");
+  lcd.print(F("Tryb:"));
   lcd.write(0);
   lcd.print(modes[mode]);
   lcd.setCursor(15, 0);
@@ -468,7 +429,7 @@ void settings() {
       if (mode > 2) mode = 0;
       clearline(0, 0, 15);
       lcd.setCursor(0, 0);
-      lcd.print("Tryb:");
+      lcd.print(F("Tryb:"));
       lcd.write(0);
       lcd.print(modes[mode]);
       lcd.setCursor(15, 0);
@@ -476,20 +437,19 @@ void settings() {
       updatemp(mode, 0, 1);
     }
     if (bt.available()) {
-      input = bt.readStringUntil(';');
+      String input = bt.readStringUntil(';');
       bt.flush();
       btctl(input);
-      input = "";
     }
   }
   while (digitalRead(ctl) == LOW) {}
   ctrl.ClearClicks();
   lcd.setCursor(15, 0);
-  lcd.print(" ");
+  lcd.print(F(" "));
   lcd.setCursor(5, 0);
-  lcd.print(" ");
+  lcd.print(F(" "));
   lcd.setCursor(0, 1);
-  lcd.print("Dno: ");
+  lcd.print(F("Dno: "));
   lcd.write(0);
   lcd.setCursor(13, 1);
   lcd.write(1);
@@ -514,23 +474,22 @@ void powermenu() {
   int tmp = 0;
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("   Ustawienia   ");
+  lcd.print(F("   Ustawienia   "));
   lcd.setCursor(0, 1);
   lcd.write(0);
   lcd.setCursor(15, 1);
   lcd.write(1);
   lcd.setCursor(1, 1);
   lcd.print(powermodes[tmp]); //Pierwszy element menu
-  if (digitalRead(btpow) == HIGH && tmp == 0) lcd.print("ON");//Status pierwszego elementu
-  if (digitalRead(btpow) == LOW && tmp == 0) lcd.print("OFF");
+  if (digitalRead(btpow) == HIGH) lcd.print(F("ON"));//Status pierwszego elementu
+  else lcd.print(F("OFF"));
   ctrl.Update();
   while (ctrl.clicks != -1) {
     ctrl.Update();
     if (bt.available()) {
-      input = bt.readStringUntil(';');
+      String input = bt.readStringUntil(';');
       bt.flush();
       btctl(input);
-      input = "";
     }
     if (ctrl.clicks == 1) {
       tmp++;
@@ -539,14 +498,14 @@ void powermenu() {
       lcd.setCursor(1, 1);
       lcd.print(powermodes[tmp]);
       switch (tmp) {
-        case 0: if (digitalRead(btpow) == HIGH) lcd.print("ON");
-          else lcd.print("OFF"); break;
-        case 1: if (ledon) lcd.print("ON");
-          else lcd.print("OFF"); break;
-        case 2: if (glosny) lcd.print("ON");
-          else lcd.print("OFF"); break;
-        case 3: if (lcdled) lcd.print("ON");
-          else lcd.print("OFF"); break;
+        case 0: if (digitalRead(btpow) == HIGH) lcd.print(F("ON"));
+          else lcd.print(F("OFF")); break;
+        case 1: if (ledon) lcd.print(F("ON"));
+          else lcd.print(F("OFF")); break;
+        case 2: if (glosny) lcd.print(F("ON"));
+          else lcd.print(F("OFF")); break;
+        case 3: if (lcdled) lcd.print(F("ON"));
+          else lcd.print(F("OFF")); break;
       }
     }
   }
@@ -565,7 +524,7 @@ void powermenu() {
 void trybpomiaru() {
   int tmp = tryb;
   lcd.clear();
-  lcd.print(" Tryb pomiaru:");
+  lcd.print(F(" Tryb pomiaru:"));
   lcd.setCursor(0, 1);
   lcd.write(0);
   lcd.print(pomiary[tmp]);
@@ -579,10 +538,9 @@ void trybpomiaru() {
       lcd.print(pomiary[tmp]);
     }
     if (bt.available()) {
-      input = bt.readStringUntil(';');
+      String input = bt.readStringUntil(';');
       bt.flush();
       btctl(input);
-      input = "";
     }
     tryb = tmp;
   }
@@ -618,6 +576,7 @@ void poweroff() {
   if (btbak) btctl("D21;");
   if (ledbak) btctl("D31;");
 }
+
 void poweron() {
   sleep_disable();
   detachInterrupt(0);
