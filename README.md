@@ -28,6 +28,7 @@ Do zrobienia:
 	-Automatyczne tworzenie nowego pliku do zapisu danych
 	-Migracja configa do JSONa  
 	-Zrobienie jeszcze ładniejszego programu  
+	-Rozróżnianie HELLO_STD od HELLO_IR (GY-906)
   
 Tryby:  
 

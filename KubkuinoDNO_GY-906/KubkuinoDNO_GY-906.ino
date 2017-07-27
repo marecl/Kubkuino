@@ -1,8 +1,6 @@
 #include <avr/sleep.h>
 #include <avr/power.h>
-#include <Adafruit_BMP085.h>
 #include <ClickButton.h>
-#include <DallasTemperature.h>
 #include <LiquidCrystal_I2C.h>
 #include <math.h>
 #include <SoftwareSerial.h>
@@ -14,24 +12,24 @@
 #define btx 5 //Bluetooth TX
 #define brx 6 //Bluetooth RX
 #define btkey 7 //Bt Key
-#define dsczuj 8 //DS18B20
 #define rled A1
 #define gled A2
 #define bled A3
+/*
+   Zmienic wyswietlacz na SSD1306
+*/
 
 /* Mozna zmieniac ale bez przesady */
-#define _NAME (String)"Kubkuino" //Mozna zmienic na jakakolwiek nazwe, ale ta pasuje :P
+#define _NAME (String)"Kubkuino_IR" //Mozna zmienic na jakakolwiek nazwe, ale ta pasuje :P
 #define _PASS (String)"0000" //Nie chcemy zeby ktos nam sie bawil. Haslo do parowania.
 
 #define TONE NOTE_D2 //Ton dzwieku alarmu
 #define ALARM_TIME 10000 //Ile trwa piszczenie alarmu.
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
-Adafruit_BMP085 czuj;
 ClickButton ctrl(ctl, LOW);
 SoftwareSerial bt(btx, brx);
-OneWire oneWire(dsczuj);
-DallasTemperature sensors(&oneWire);
+
 void setup() {
   ctrl.debounceTime = 10;
   ctrl.longClickTime = 500;
@@ -48,8 +46,6 @@ void setup() {
   digitalWrite(bled, LOW);
   digitalWrite(btkey, LOW);
   digitalWrite(btpow, LOW);
-  czuj.begin();
-  sensors.begin();
   bt.begin(38400);
   lcd.init();
   lcd.backlight();
@@ -60,186 +56,113 @@ void setup() {
   lcd.createChar(3, icon); //Ikona BT
   lcd.display();
   lcd.clear();
-  lcd.print(modes[mode]);
+  drawmain(hot, cold);
 }
 
 void loop() {
-  updatemp(mode, 10, 0);
+  updatemp(6, 0);
   alarm();
-  lcd.setCursor(0, 1);
-  if (pomiarpop > hot)
-    lcd.print(F("Goraca"));
-  else if (pomiarpop < cold)
-    lcd.print(F("Zimna "));
-  else lcd.print(F("Ideolo"));
-
-  ctrl.Update();
-
-  if (bt.available()) {
-    String input = bt.readStringUntil(';');
-    bt.flush();
-    btctl(input);
-    lcd.setCursor(0, 0);
-    lcd.print(modes[mode]);
-  }
-  if (conn == true && digitalRead(btpow) == HIGH) { //Rysuje ikone polaczenia
+  /*if (conn == true && digitalRead(btpow) == HIGH) { //Rysuje ikone polaczenia
     lcd.setCursor(15, 1); lcd.write(3);
-  } else {
+    } else {
     lcd.setCursor(15, 1); lcd.print(F(" "));
-  }
-  switch (ctrl.clicks) {
-    case 1: //Odczyty, goraca, zimna
-      lcd.clear();
-      if (plaskie) lcd.print(F("Plaskie"));
-      else lcd.print(F("Wklesle"));
-      lcd.setCursor(0, 1);
-      lcd.print(F("Z/G:"));
-      lcd.print(cold, 1);
-      lcd.print(F("/"));
-      lcd.print(hot, 1);
-      lcd.write(2);
-      lcd.print(F("C"));
-      lcd.setCursor(12, 0);
-      lcd.write(2);
-      lcd.print(F("C"));
-      uint32_t tempnow;
-      tempnow = millis();
-      while (millis() - tempnow <= 2000) {
-        lcd.setCursor(8, 0);
-        lcd.print(pomiar, 1);
-        pomiar = czuj.readTemperature();
-      } lcd.clear();
-      lcd.print(modes[mode]); break;
-    case 2: settings(); //Ustawienia (material)
-      lcd.print(modes[mode]); break;
-    case 3: powermenu(); //Ustawienia zasilania
-      lcd.print(modes[mode]); break;
-    case 4: trybpomiaru(); //Zmiana trybu pomiaru
-      lcd.clear();
-      lcd.print(modes[mode]); break;
-  }
-}
+    }*/
 
-void pomiardno() {
-  tryb = 3;
-  lcd.clear();
-  lcd.print(F("   POMIAR DNA"));
-  lcd.setCursor(4, 1);
-  while (digitalRead(ctl) == LOW) {}
-  ctrl.ClearClicks();
-  while (ctrl.clicks != -1 && tryb == 3) {
-    pomiarpop = czuj.readTemperature();
-    lcd.setCursor(5, 1);
-    lcd.print(pomiarpop, 1);
-    lcd.write(2);
-    lcd.print(F("C"));
+  uint32_t czas = millis();
+  while (millis() - czas <= 100) {
     ctrl.Update();
-    alarm();
+
     if (bt.available()) {
       String input = bt.readStringUntil(';');
       bt.flush();
       btctl(input);
-      lcd.clear();
-      lcd.print(F("   POMIAR DNA"));
-      lcd.setCursor(4, 1);
+    }
+
+    if (ctrl.clicks == 1) {
+      powermenu();
+      drawmain(hot, cold);
     }
   }
-  tryb = 0;
-  lcd.clear();
-  lcd.print(modes[mode]);
 }
 
-void pomiarmanual() {
-  tryb = 2;
-  lcd.clear();
-  lcd.print(F("  TRYB RECZNY"));
-  lcd.setCursor(4, 1);
-  while (digitalRead(ctl) == LOW) {}
-  ctrl.ClearClicks();
-  while (ctrl.clicks != -1 && tryb == 2) {
-    ctrl.Update();
-    sensors.requestTemperatures();
-    pomiarpop = sensors.getTempCByIndex(0);
-    if (bt.available()) {
-      String input = bt.readStringUntil(';');
-      bt.flush();
-      btctl(input);
-      lcd.clear();
-      lcd.print(F("  TRYB RECZNY"));
-      lcd.setCursor(4, 1);
-    }
-    lcd.setCursor(4, 1);
-    lcd.print(pomiarpop);
-    lcd.write(2);
-    lcd.print(F("C"));
-    alarm();
-  }
-  while (digitalRead(ctl) == LOW) {}
-  plaskie = true;
-  tryb = 0;
-  lcd.clear();
-  lcd.print(modes[mode]);
+double readtemp() {
+  Wire.beginTransmission(0x5A);
+  Wire.write(0x07);
+  Wire.endTransmission(false);
+
+  Wire.requestFrom(0x5A, 0x03);
+  uint16_t ret = Wire.read();
+  ret |= Wire.read() << 8;
+  return (ret * .02) - 273.15;
+}
+
+void calculate(int _hot, int _cold, int _pomiar) { //Dla paska idacego od goracej do zimnej
+  int curr = map(_pomiar, _cold, _hot, 0, 16);
+  if (curr > 16) curr = 16;
+  else if (curr < 0) curr = 0;
+  lcd.setCursor(0, 1);
+  if (curr == 16) lcd.print("AAAAAAAAAAAAAAAA");
+  else if (curr == 0) clearline(1, 0, 15);
+  else for (int a = 0; a < 16; a++)
+      if (a < curr) lcd.print("A");
+      else lcd.print(" ");
+  lcd.print(curr);
+  lcd.print("  ");
+  return void();
 }
 
 //Wypisuje temperature w odpowiednim miejscu
 //Chyba ze -1 i -1, wtedy pisze jak leci
 //Moze kiedys sie przyda
-void updatemp(int a, int x, int y) {
-  if (!plaskie && tryb == 0) {
-    plaskie = false; pomiarmanual();
-  } else {
-    if ((plaskie && tryb == 0) || tryb == 2 || tryb == 1)  {
-      pomiar = czuj.readTemperature();
-      pomiarpop = poprawka(a, pomiar);
-    }
-    if (x != -1 && y != -1)
-      lcd.setCursor(x, y);
-    lcd.print(pomiarpop, 1);
-    lcd.write(2);
-    lcd.print(F("C"));
-  }
+void updatemp(int x, int y) {
+  pomiar = readtemp();
+  if (x != -1 && y != -1)
+    lcd.setCursor(x, y);
+  lcd.print(pomiar);
+  lcd.write(2);
+  lcd.print(F("C"));
+  calculate(hot, cold, pomiar);
+  return void();
+}
+
+void drawmain(int _hot, int _cold) {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(_hot);
+  lcd.write(2);
+  lcd.print(F("C"));
+  lcd.setCursor(12, 0);
+  lcd.print(_cold);
+  lcd.write(2);
+  lcd.print(F("C"));
+  return void();
 }
 
 void btctl(String tinput) { //Usuwamy \r\n
   if (tinput == "\r\n" || tinput == "\n" || tinput == "\r") return void();
   char command = tinput.charAt(0);
+  String tempout;
   if (tinput.length() > 1)
     tinput.remove(0, 1);
-  String tempout;
   switch (command) {
-    case 'e': bt.print(F("HELLO_STD\r\n")); conn = true; break; //Odpowiadamy - polaczono z dobrym urzadzeniem
-    case 'r':
-      if ((!plaskie && tryb == 0) || tryb == 2) {
-        sensors.requestTemperatures();
-        pomiar = sensors.getTempCByIndex(0);
-        bt.print(pomiar);
-      } else if ((tryb != 2 && plaskie) || tryb == 3) {
-        pomiar = czuj.readTemperature();
-        if (tinput[0] == '1')
-          pomiarpop = poprawka(mode, pomiar);
-        bt.print(pomiar);
-      }
+    case 'e': bt.print(F("HELLO_IR\r\n")); conn = true; break; //Odpowiadamy - polaczono z dobrym urzadzeniem
+    case 'r': pomiar = readtemp();
+      bt.print(pomiar);
       bt.print("\r\n"); break;
-    case 't': if (pomiarpop > hot) bt.print("H\r\n");
-      else if (pomiarpop < cold) bt.print("C\r\n");
+    case 't': if (pomiar > hot) bt.print("H\r\n");
+      else if (pomiar < cold) bt.print("C\r\n");
       else bt.print("R\r\n"); break;
     case 'd': service("AT+ORGL"); service("AT+NAME=" + _NAME); service("AT+PSWD=" + _PASS); break; //Reset do fabrycznych
     case 'q': if (tinput == "quit") {
         conn = false; service("AT+DISC"); digitalWrite(btpow, LOW); //Rozlaczanie
         delay(100); digitalWrite(btpow, HIGH);
       } break; //tak trzeba bo sie arduino zacina
-    case 'H': if (tinput.length() >= 1 && tinput[0] != '?') hot = atof(tinput.c_str()); //Set hot
-      else if (tinput[0] == '?')
-        bt.print((String)hot + "\r\n");
+    case 'H': if (tinput.length() >= 1 && tinput[0] != '?') hot = atoi(tinput.c_str()); //Set hot
+      else if (tinput[0] == '?') bt.print((String)hot + "\r\n");
       break;
-    case 'C': if (tinput.length() >= 1 && tinput[0] != '?') cold = atof(tinput.c_str()); //Set cold
+    case 'C': if (tinput.length() >= 1 && tinput[0] != '?') cold = atoi(tinput.c_str()); //Set cold
       else if (tinput[0] == '?')
         bt.print((String)cold + "\r\n");
-      break;
-    case 'M': if (tinput.length() == 1 && tinput[0] != '?')
-        mode = (atoi(tinput.c_str())) % 3; //Ustawia tryb
-      else if (tinput.length() == 1 && tinput[0] == '?')
-        bt.print((String)mode + "\r\n");
       break;
     case 'S': if (tinput.length() >= 2 ) service(tinput); //Komendy AT do bluetootha
       break;
@@ -287,12 +210,6 @@ void btctl(String tinput) { //Usuwamy \r\n
             if (glosny) bt.print("1\r\n");
             else bt.print("0\r\n");
           } break;
-        case '5': if (tinput[1] == '0') plaskie = false;
-          else if (tinput[1] == '1')plaskie = true;
-          else if (tinput[1] == '?') {
-            if (plaskie) bt.print("1\r\n");
-            else bt.print("0\r\n");
-          } break;
         case '6'://Wysylamy wszystko co jest wlaczone
           //LCD, Podswietlenie, LED, Alarm, Plaskie
           tempout = "";
@@ -300,24 +217,12 @@ void btctl(String tinput) { //Usuwamy \r\n
           if (lcdled) tempout += "1"; else tempout += "0";
           if (ledon) tempout += "1"; else tempout += "0";
           if (glosny) tempout += "1"; else tempout += "0";
-          if (plaskie) tempout += "1"; else tempout += "0";
           bt.print(tempout + "\r\n"); break;
-        case '7':
-          if (tinput[1] == '0') {
-            mode = 0; tryb = 0;
-          } else if (tinput[1] == '1') {
-            mode = 0; tryb = 1;
-          } else if (tinput[1] == '2') {
-            tryb = 2; pomiarmanual();
-          } else if (tinput[1] == '3') {
-            tryb = 3; pomiardno();
-          } else if (tinput[1] == '?')
-            bt.print((String)tryb + "\r\n");
-          break;
         case '8': poweroff(); break;
       } break;
   }
   bt.flush();
+  return void();
 }
 
 //Tutaj wchodzi komenda bez "\r\n"!
@@ -350,6 +255,7 @@ void service(String a) {
   if (conn) bt.print(a + "\r\n");
   delay(1000);
   lcd.clear();
+  return void();
 }
 
 //Wiersz, od ktorej do ktorej kolumny
@@ -357,13 +263,14 @@ void clearline(int line, int pocz, int kon) {
   lcd.setCursor(pocz, line);
   for (int a = pocz; a <= kon; a++)
     lcd.print(F(" "));
+  return void();
 }
 
 void bipczyk() {
   uint32_t tempbuzz = millis();
   tone(buzz, TONE);
   while ((millis() - tempbuzz) <= ALARM_TIME && digitalRead(ctl) == HIGH) {
-    if (tryb == 0 || tryb == 1) updatemp(mode, 10, 0);
+    updatemp(6, 0);
     if (bt.available()) {
       String input = bt.readStringUntil(';');
       bt.flush();
@@ -371,15 +278,14 @@ void bipczyk() {
     }
   }
   noTone(buzz);
-  if (tryb == 0 || tryb == 1)
-    while (digitalRead(ctl) == LOW)
-      updatemp(mode, 10, 0);
+  while (digitalRead(ctl) == LOW)
+    updatemp(6, 0);
   ctrl.ClearClicks();
-  return;
+  return void();
 }
 
 void alarm() {
-  if (pomiarpop > hot) {
+  if (pomiar > hot) {
     wylalarm = true;
     czyzimna = false;
     czymaalarm = false;
@@ -388,7 +294,7 @@ void alarm() {
       digitalWrite(gled, LOW);
       digitalWrite(bled, LOW);
     }
-  } else if (pomiarpop < cold) {
+  } else if (pomiar < cold) {
     czyzimna = true;
     czymaalarm = false;
     wylalarm = true;
@@ -412,62 +318,7 @@ void alarm() {
     czymaalarm = false; //Magia booli. Nie ruszaj prosze :c
     czyzimna = true;
   }
-}
-
-void settings() {
-  lcd.clear();
-  lcd.print(F("Tryb:"));
-  lcd.write(0);
-  lcd.print(modes[mode]);
-  lcd.setCursor(15, 0);
-  lcd.write(1);
-  updatemp(mode, 0, 1);
-  while (ctrl.clicks != -1) {
-    ctrl.Update();
-    if (ctrl.clicks == 1) {
-      mode++;
-      if (mode > 2) mode = 0;
-      clearline(0, 0, 15);
-      lcd.setCursor(0, 0);
-      lcd.print(F("Tryb:"));
-      lcd.write(0);
-      lcd.print(modes[mode]);
-      lcd.setCursor(15, 0);
-      lcd.write(1);
-      updatemp(mode, 0, 1);
-    }
-    if (bt.available()) {
-      String input = bt.readStringUntil(';');
-      bt.flush();
-      btctl(input);
-    }
-  }
-  while (digitalRead(ctl) == LOW) {}
-  ctrl.ClearClicks();
-  lcd.setCursor(15, 0);
-  lcd.print(F(" "));
-  lcd.setCursor(5, 0);
-  lcd.print(F(" "));
-  lcd.setCursor(0, 1);
-  lcd.print(F("Dno: "));
-  lcd.write(0);
-  lcd.setCursor(13, 1);
-  lcd.write(1);
-  lcd.setCursor(6, 1);
-  int tempdno = 2;
-  lcd.print(wybor[tempdno % 2]);
-  while (ctrl.clicks != -1) {
-    ctrl.Update();
-    if (ctrl.clicks == 1) {
-      tempdno++;
-      lcd.setCursor(6, 1);
-      lcd.print(wybor[tempdno % 2]);
-    }
-  }
-  while (digitalRead(ctl) == LOW) {}
-  if (tempdno % 2 == 0) btctl("D51");
-  else btctl("D50");
-  lcd.clear();
+  return void();
 }
 
 void powermenu() {
@@ -519,38 +370,7 @@ void powermenu() {
     case 5: break;
   }
   lcd.clear();
-}
-
-void trybpomiaru() {
-  int tmp = tryb;
-  lcd.clear();
-  lcd.print(F(" Tryb pomiaru:"));
-  lcd.setCursor(0, 1);
-  lcd.write(0);
-  lcd.print(pomiary[tmp]);
-  lcd.write(1);
-  while (ctrl.clicks != -1) {
-    ctrl.Update();
-    if (ctrl.clicks == 1) {
-      tmp++;
-      if (tmp > 3) tmp = 0;
-      lcd.setCursor(1, 1);
-      lcd.print(pomiary[tmp]);
-    }
-    if (bt.available()) {
-      String input = bt.readStringUntil(';');
-      bt.flush();
-      btctl(input);
-    }
-    tryb = tmp;
-  }
-  switch (tmp) {
-    case 0: btctl("D70"); break;
-    case 1: btctl("D71"); break;
-    case 2: btctl("D72"); break;
-    case 3: btctl("D73"); break;
-  }
-  lcd.clear();
+  return void();
 }
 
 void poweroff() {
@@ -575,9 +395,11 @@ void poweroff() {
   if (lcdledbak) btctl("D11;");
   if (btbak) btctl("D21;");
   if (ledbak) btctl("D31;");
+  return void();
 }
 
 void poweron() {
   sleep_disable();
   detachInterrupt(0);
+  return void();
 }

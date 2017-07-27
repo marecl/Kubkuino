@@ -1,6 +1,46 @@
-/*************************************************
- * Public Constants
- *************************************************/
+/*
+   Zmniejszamy bałagan w głównym pliku
+*/
+
+/* Pomiary */
+int hot = 60; //60
+int cold = 47; //47
+int pomiar;
+
+/* Bluetooth */
+bool conn = false; //Polaczony?
+
+/* Alarm */
+bool wylalarm = true; //Drzemka?
+bool czymaalarm = false; //Czy ma sie odpalac
+bool czyzimna = true; //Czy wczesniej byla zimna
+bool glosny = true; //Czy ma piszczec?
+
+/* Zasilanie */
+bool lcdon = true;
+bool ledon = true;
+bool lcdled = true;
+
+String powermodes[] = { //Settings list
+  " Bluetooth:",
+  "   LED: ",
+  "  Alarm: ",
+  "Tlo ekranu:",
+  "    Wylacz    ",
+  "    POWROT    "
+};
+uint8_t lar[] = { //Lewa strzalka
+  0x00, 0x01, 0x03, 0x07, 0x07, 0x03, 0x01, 0x00
+};
+uint8_t rar[] = { //Prawa strzalka
+  0x20, 0x30, 0x38, 0x3C, 0x3C, 0x38, 0x30, 0x20
+};
+uint8_t st[] = { //Znak stopnia
+  0x06, 0x9, 0x9, 0x06, 0x00, 0x00, 0x00, 0x00
+};
+uint8_t icon[] = { //Bluetooth
+  0x04, 0x06, 0x15, 0x0E, 0x0E, 0x15, 0x06, 0x04
+};
 
 #define NOTE_B0  31
 #define NOTE_C1  33
