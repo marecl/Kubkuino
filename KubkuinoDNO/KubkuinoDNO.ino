@@ -207,7 +207,8 @@ void btctl(String tinput) { //Usuwamy \r\n
     tinput.remove(0, 1);
   String tempout;
   switch (command) {
-    case 'e': bt.print(F("HELLO_STD\r\n")); conn = true; break; //Odpowiadamy - polaczono z dobrym urzadzeniem
+    case 'e': bt.flush(); bt.print(F("HELLO_STD\r\n"));
+      conn = true; break; //Odpowiadamy - polaczono z dobrym urzadzeniem
     case 'r':
       if ((!plaskie && tryb == 0) || tryb == 2) {
         sensors.requestTemperatures();
