@@ -1,6 +1,0 @@
-﻿cl : Wiersz polecenia warning D9035: Opcja "clr:pure" jest przestarzała i będzie usunięta w przyszłych wydaniach
-  Kubkuino.cpp
-LINK : warning LNK4075: zignorowano opcję „/INCREMENTAL” z powodu określenia opcji „/LTCG”
-  LINK : określono opcję /LTCG, lecz generowanie kodu nie było wymagane; usuń opcję /LTCG z wiersza polecenia konsolidatora w celu podwyższenia wydajności konsolidatora
-  Kubkuino.vcxproj -> C:\Users\fotel\Documents\Arduino\Kubkuino\Testy\Kubkuino\Kubkuino\Debug\Kubkuino.exe
-  Kubkuino.vcxproj -> C:\Users\fotel\Documents\Arduino\Kubkuino\Testy\Kubkuino\Kubkuino\Debug\Kubkuino.pdb (Full PDB)

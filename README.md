@@ -3,13 +3,13 @@
 
 Zrobiłeś kawę albo herbatę i nie chcesz pilnować aż ostygnie? To coś dla Ciebie!
 
-Termopara:  
+Kubkuino:  
 	-.NET Framework 3.5  
 	-Visual Studio 2017 Community
 	-Ustawianie temperatur  
 	-Tryb pomiaru  
 	-Ustawianie materiału  
-	-Ustawianie kształtu dna (płaskie/wklęsłe)  
+	-Ustawianie kształtu dna (płaskie/wklęsłe)   
 	-Włączanie/wyłączanie alarmu  
 	-Ustawienia modułu Bluetooth  
 	-Zapis ostatnich ustawień  
@@ -100,16 +100,11 @@ Katalog:
   * Adafruit_BMP085_Library: Biblioteka czujnika temperatury i ciśnienia BMP180.  
   * ClickButton: Sterowanie jednym przyciskiem.  
   * LiquidCrystal_I2C: Biblioteka do obsługi wyświetlacza.  
-4. ~~Termopara_Wariacje: Odłamy Termopary zoptymalizowane do różnych konfiguracji~~
-	Nieaktualizowany kod od dawna. Trzeba nadrobić.  
-  * Termopara_BT: BT, LED  
-  * TermoparaDNO_Minimum: LCD, LED, brak komunikacji  
-  * TermoparaDNO_Serial: LCD, LED, komunikacja przez USB (domyśnie baud 9600)  
-5. TermoparaDNO: Najbardziej wypasiona wersja programu  
-6. Testy: Katalog z programami później dodanymi do głównego kodu 
+4. TermoparaDNO: Najbardziej wypasiona wersja programu  
+5. Testy: Katalog z programami później dodanymi do głównego kodu 
   * Kubkuino: Druga wersja aplikacji na PC   
   * TestBluetooth: Test komend Bluetooth  
   * TestDokumentacje: Folder roboczy dokumentacji  
   * RoznicaPomiaru: Dane z konsoli dotyczące różnicy temperatur dna a kubka  
   * TestTermoparaV1: Pierwsza wersja aplikacji na PC  
-7. ReadMe: To ja!
+6. ReadMe: To ja!

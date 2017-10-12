@@ -139,7 +139,7 @@ void ClickButton::Update()
   _lastState = _btnState;
 }
 
-void ClickButton::clearClicks()
+void ClickButton::reset()
 {
 	_clickCount = 0;
 	clicks = 0;

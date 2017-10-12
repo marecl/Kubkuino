@@ -1,4 +1,4 @@
-update=23.07.2017 13:21:24
+update=10.10.2017 19:02:38
 version=1
 last_client=kicad
 [pcbnew]
@@ -20,9 +20,6 @@ SolderMaskMinWidth=0.000000000000
 DrawSegmentWidth=0.200000000000
 BoardOutlineThickness=0.100000000000
 ModuleOutlineThickness=0.150000000000
-[cvpcb]
-version=1
-NetIExt=net
 [general]
 version=1
 [eeschema]
@@ -125,3 +122,6 @@ LibName93=Worldsemi
 LibName94=Xicor
 LibName95=zetex
 LibName96=Zilog
+[cvpcb]
+version=1
+NetIExt=net
