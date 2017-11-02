@@ -180,13 +180,16 @@ void btctl(String tinput) { //Usuwamy \r\n
             (glosny) ? bt.print(F("1\r\n")) :
             bt.print(F("0\r\n"));
           } break;
+        case '5': bt.print(F("1\r\n")); break;
         case '6':
           tempout = "";
           (lcdon) ? tempout += "1" : tempout += "0";
           (dimlcd) ? tempout += "1" : tempout += "0";
           (ledon) ? tempout += "1" : tempout += "0";
           (glosny) ? tempout += "1" : tempout += "0";
-          bt.print(tempout + "\r\n"); break;
+          tempout += "1\r\n";
+          //Brak poprawki czyli zawsze plaskie. Kompatybilnosc wsteczna hyhy
+          bt.print(tempout); break;
         case '8': poweroff(); break;
       } break;
   }
@@ -214,10 +217,8 @@ void service(String a) {
   digitalWrite(btkey, LOW); delay(500);
   bt.flush();
   a.trim();
-  for (uint8_t g = 0; g < a.length(); g++) {
-    if (a[g] == 0x0A || a[g] == 0x0D)
-      a.remove(g);
-  }
+  for (uint8_t g = 0; g < a.length(); g++)
+    if (a[g] == 0x0A || a[g] == 0x0D) a.remove(g);
   a.trim();
   display.print(a);//Mozna wywalic ale pokazuje ze dziala
   if (conn) bt.print(a + "\r\n");

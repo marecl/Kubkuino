@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2
+EESchema Schematic File Version 3
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -45,6 +45,7 @@ LIBS:elec-unifil
 LIBS:ESD_Protection
 LIBS:ftdi
 LIBS:gennum
+LIBS:graphic
 LIBS:graphic_symbols
 LIBS:hc11
 LIBS:infineon
@@ -227,7 +228,7 @@ F 1 "AC/DC In (12V)" V 2550 5350 50  0000 C CNN
 F 2 "Socket_Strips:Socket_Strip_Angled_1x02_Pitch2.54mm" H 2450 5350 50  0001 C CNN
 F 3 "" H 2450 5350 50  0001 C CNN
 	1    2450 5350
-	-1   0    0    1   
+	-1   0    0    -1  
 $EndComp
 Text GLabel 5450 5250 2    60   Input ~ 0
 5V
@@ -512,39 +513,17 @@ $EndComp
 Text GLabel 7250 2950 3    60   Input ~ 0
 Bkey
 $Comp
-L CONN_01X04 J3
-U 1 1 597553D9
-P 5750 3000
-F 0 "J3" H 5750 3250 50  0000 C CNN
-F 1 "Czujnik" V 5850 3000 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x04_Pitch2.54mm_SMD_Pin1Left" H 5750 3000 50  0001 C CNN
-F 3 "" H 5750 3000 50  0001 C CNN
-	1    5750 3000
-	1    0    0    -1  
-$EndComp
-$Comp
-L CONN_01X04 J5
-U 1 1 597555A0
-P 6150 3000
-F 0 "J5" H 6150 3250 50  0000 C CNN
-F 1 "LCD" V 6250 3000 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x04_Pitch2.54mm_SMD_Pin1Left" H 6150 3000 50  0001 C CNN
-F 3 "" H 6150 3000 50  0001 C CNN
-	1    6150 3000
-	1    0    0    -1  
-$EndComp
-$Comp
 L GND #PWR06
 U 1 1 5975584B
-P 5550 3050
-F 0 "#PWR06" H 5550 2800 50  0001 C CNN
-F 1 "GND" H 5550 2900 50  0000 C CNN
-F 2 "" H 5550 3050 50  0001 C CNN
-F 3 "" H 5550 3050 50  0001 C CNN
-	1    5550 3050
-	0    1    1    0   
+P 5700 3050
+F 0 "#PWR06" H 5700 2800 50  0001 C CNN
+F 1 "GND" H 5700 2900 50  0000 C CNN
+F 2 "" H 5700 3050 50  0001 C CNN
+F 3 "" H 5700 3050 50  0001 C CNN
+	1    5700 3050
+	1    0    0    -1  
 $EndComp
-Text GLabel 5550 3150 0    60   Input ~ 0
+Text GLabel 5950 3150 0    60   Input ~ 0
 5V
 Text GLabel 5300 2200 0    60   Input ~ 0
 Reset
@@ -563,9 +542,9 @@ Text GLabel 6300 1800 2    60   Input ~ 0
 5V
 Text GLabel 4700 1600 2    60   Input ~ 0
 1W
-Text GLabel 6300 2850 2    60   Input ~ 0
+Text GLabel 6450 2850 2    60   Input ~ 0
 SDA
-Text GLabel 6300 2950 2    60   Input ~ 0
+Text GLabel 6450 2950 2    60   Input ~ 0
 SCL
 Text GLabel 4700 3600 2    60   Input ~ 0
 BT
@@ -678,18 +657,6 @@ Wire Wire Line
 Wire Wire Line
 	7550 2950 7550 3150
 Wire Wire Line
-	4700 2850 6300 2850
-Connection ~ 5550 2850
-Wire Wire Line
-	4700 2950 6300 2950
-Wire Wire Line
-	5550 3050 5950 3050
-Wire Wire Line
-	5950 3150 5550 3150
-Connection ~ 5550 2950
-Connection ~ 5950 2850
-Connection ~ 5950 2950
-Wire Wire Line
 	3900 5550 5050 5550
 Connection ~ 4100 5550
 Connection ~ 4450 5550
@@ -729,4 +696,56 @@ F 3 "" H 5300 5250 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Connection ~ 5050 5250
+Text GLabel 5950 2850 0    60   Input ~ 0
+SDA
+Text GLabel 5950 2950 0    60   Input ~ 0
+SCL
+Text GLabel 6450 3150 2    60   Input ~ 0
+5V
+Wire Wire Line
+	5700 3050 5950 3050
+$Comp
+L GND #PWR012
+U 1 1 59F4A174
+P 6700 3050
+F 0 "#PWR012" H 6700 2800 50  0001 C CNN
+F 1 "GND" H 6700 2900 50  0000 C CNN
+F 2 "" H 6700 3050 50  0001 C CNN
+F 3 "" H 6700 3050 50  0001 C CNN
+	1    6700 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6450 3050 6700 3050
+Text GLabel 5250 2950 2    60   Input ~ 0
+SDA
+Text GLabel 5250 3050 2    60   Input ~ 0
+SCL
+Wire Wire Line
+	4700 2850 4800 2850
+Wire Wire Line
+	4800 2850 4800 2900
+Wire Wire Line
+	4800 2900 5200 2900
+Wire Wire Line
+	5200 2900 5200 2950
+Wire Wire Line
+	5200 2950 5250 2950
+Wire Wire Line
+	4700 2950 5150 2950
+Wire Wire Line
+	5150 2950 5150 3050
+Wire Wire Line
+	5150 3050 5250 3050
+$Comp
+L Conn_02x04_Odd_Even J3
+U 1 1 59F4A6D7
+P 6150 2950
+F 0 "J3" H 6200 3267 50  0000 C CNN
+F 1 "I2C" H 6200 3176 50  0000 C CNN
+F 2 "Socket_Strips:Socket_Strip_Straight_2x04_Pitch2.54mm_SMD" H 6150 2950 50  0001 C CNN
+F 3 "" H 6150 2950 50  0001 C CNN
+	1    6150 2950
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
