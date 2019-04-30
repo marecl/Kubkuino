@@ -107,9 +107,9 @@ void handlemain(int8_t *_hot, int8_t *_cold, double *_pomiar, bool *_glosny) {
   display.setCursor(0, 0);
   display.setTextColor(WHITE, BLACK);
   display.setTextSize(1);
-  display.print(F("Goraca: "));
+  display.print(F("  Hot:  "));
   display.print(*_hot);
-  display.print(F("\xF7\x43\nZimna:  ")); //Degree, C, newline and next line
+  display.print(F("\xF7\x43\n Cold:  ")); //Degree, C, newline and next line
   display.print(*_cold);
   display.println(F("\xF7\x43"));
 
